@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace MPCLogger5
 {
@@ -37,6 +38,7 @@ namespace MPCLogger5
             cm.MenuItems.Add(CloseProgram);
 
             notifyIcon1.ContextMenu = cm;
+            notifyIcon1.MouseUp += new MouseEventHandler(notifyIcon1_MouseClick);
         }
 
         private void CloseProgram_click(object sender, EventArgs e)
@@ -44,9 +46,16 @@ namespace MPCLogger5
             this.Close();
         }
 
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e) 
+        {
+            // Ugh
+            MethodInfo mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+            mi.Invoke(notifyIcon1, null);
+        }
+
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            // Do nothing.
+            // Eh
         }
 
     }
